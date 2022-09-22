@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\RegistrationToken;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -23,4 +23,9 @@ class RegistrationToken extends Model
         'revoked',
         'expired_at',
     ];
+
+    public function revoke(): void
+    {
+        $this->delete();
+    }
 }

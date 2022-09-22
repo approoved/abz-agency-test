@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use App\Models\RegistrationToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Models\RegistrationToken\RegistrationToken;
 
-class GetRegistrationTokenController extends Controller
+final class GetRegistrationTokenController extends Controller
 {
     public function __invoke(): JsonResponse
     {
@@ -17,6 +17,9 @@ class GetRegistrationTokenController extends Controller
             'expired_at' => Carbon::now()->addMinutes(40)
         ]);
 
-        return response()->json(['token' =>$token->token]);
+        return response()->json([
+            'success' => true,
+            'token' =>$token->token
+        ]);
     }
 }
