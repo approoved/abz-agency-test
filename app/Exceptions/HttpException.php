@@ -2,10 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
+use RuntimeException;
 use Illuminate\Http\JsonResponse;
 
-final class HttpException extends Exception
+final class HttpException extends RuntimeException
 {
     public function render(): JsonResponse
     {

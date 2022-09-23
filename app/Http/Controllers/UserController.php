@@ -21,9 +21,6 @@ final class UserController extends Controller
 {
     public const DEFAULT_COUNT = 5;
 
-    /**
-     * @throws HttpException
-     */
     public function store(CreateUserRequest $request, Kraken $kraken): JsonResponse
     {
         $this->authenticate($request);
@@ -73,16 +70,13 @@ final class UserController extends Controller
         $data = $request->validated();
 
         $users = User::query()->paginate(
-            $data['count'] ?? static::DEFAULT_COUNT,
+            $data['count'] ?? self::DEFAULT_COUNT,
             page: $data['page'] ?? null
         );
 
         return response()->json(new UserResourceCollection($users));
     }
 
-    /**
-     * @throws HttpException
-     */
     public function show(int $id): JsonResponse
     {
         $user = User::query()->firstWhere('id', $id);
@@ -100,9 +94,6 @@ final class UserController extends Controller
         ]);
     }
 
-    /**
-     * @throws HttpException
-     */
     private function authenticate(Request $request): void
     {
         $token = htmlspecialchars($request->header('Authorization'));
