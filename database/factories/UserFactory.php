@@ -26,8 +26,6 @@ final class UserFactory extends Factory
         $kraken = new Kraken();
 
         $optimizedPhoto = $kraken->optimizeImageUrl('https://thispersondoesnotexist.com/image');
-        $path = 'images/' . uniqid() . '.jpeg';
-        Storage::disk('public')->put($path, $optimizedPhoto);
 
         return [
             'name' => fake()->firstName(),
@@ -36,7 +34,7 @@ final class UserFactory extends Factory
             'position_id' => fake()->randomElement($positionsIds),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'photo' => Storage::url($path),
+            'photo' => $optimizedPhoto,
         ];
     }
 }
