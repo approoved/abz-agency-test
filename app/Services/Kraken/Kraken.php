@@ -58,11 +58,11 @@ final class Kraken
                 'height' => 70,
                 'strategy' => 'fit',
             ],
-            "s3_store" => [
-                "key" => $config['key'],
-                "secret" => $config['secret'],
-                "bucket" => $config['bucket'],
-                "region" => $config['region'],
+            's3_store' => [
+                'key' => $config['key'],
+                'secret' => $config['secret'],
+                'bucket' => $config['bucket'],
+                'region' => $config['region'],
                 'path' => 'images/' . uniqid() . '.jpeg',
             ],
         ];
