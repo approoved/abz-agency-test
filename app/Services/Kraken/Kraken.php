@@ -24,7 +24,7 @@ final class Kraken
 
         $response = $this->client->upload($params);
 
-        return file_get_contents($response['kraked_url']);
+        return $response['kraked_url'];
     }
 
     /**
@@ -43,11 +43,13 @@ final class Kraken
             );
         }
 
-        return file_get_contents($response['kraked_url']);
+        return $response['kraked_url'];
     }
 
     private function getParams(): array
     {
+        $config = config('aws-s3');
+
         return [
             'wait' => true,
             'lossy' => true,
@@ -55,6 +57,13 @@ final class Kraken
                 'width' => 70,
                 'height' => 70,
                 'strategy' => 'fit',
+            ],
+            's3_store' => [
+                'key' => $config['key'],
+                'secret' => $config['secret'],
+                'bucket' => $config['bucket'],
+                'region' => $config['region'],
+                'path' => 'images/' . uniqid() . '.jpeg',
             ],
         ];
     }
