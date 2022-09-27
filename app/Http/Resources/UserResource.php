@@ -10,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 final class UserResource extends JsonResource
 {
     /**
-     * @param  Request  $request
+     * @param Request $request
      */
     public function toArray($request): array|Arrayable|JsonSerializable
     {
@@ -20,6 +20,7 @@ final class UserResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'position_id' => $this->position_id,
+            'position' => $this->position->name,
             'created_at' => $this->created_at,
             'photo' => $this->photo,
         ];

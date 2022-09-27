@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use App\Models\User\User;
@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 use App\Services\Kraken\Kraken;
 use Illuminate\Http\JsonResponse;
 use App\Exceptions\HttpException;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\UserPosition\UserPosition;
 use App\Http\Requests\RetrieveUserRequest;
-use App\Http\Resources\UserResourceCollection;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\UserResourceCollection;
 use App\Models\RegistrationToken\RegistrationToken;
 
 final class UserController extends Controller
@@ -59,7 +60,7 @@ final class UserController extends Controller
             [
             'success' => true,
             'user_id' => $user->id,
-            'message' => 'New user successfully registered'
+            'message' => 'New user successfully registered',
             ],
             Response::HTTP_CREATED
         );
@@ -69,7 +70,7 @@ final class UserController extends Controller
     {
         $data = $request->validated();
 
-        $users = User::query()->paginate(
+        $users = User::query()->with('position')->paginate(
             $data['count'] ?? self::DEFAULT_COUNT,
             page: $data['page'] ?? null
         );
@@ -79,7 +80,10 @@ final class UserController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $user = User::query()->firstWhere('id', $id);
+        $user = User::query()
+            ->where('id', $id)
+            ->with('position')
+            ->first();
 
         if (! $user) {
             throw new HttpException(
@@ -90,7 +94,7 @@ final class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'user' => new UserResource($user)
+            'user' => new UserResource($user),
         ]);
     }
 

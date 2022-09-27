@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\GetUserPositionListController;
-use App\Http\Controllers\GetRegistrationTokenController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\GetUserPositionListController;
+use App\Http\Controllers\Api\GetRegistrationTokenController;
 
 Route::get('/token', GetRegistrationTokenController::class);
 

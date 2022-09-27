@@ -16,6 +16,8 @@ final class UserResourceCollection extends ResourceCollection
     {
         $data = $this->resource->toArray();
 
+        $currentPage = array_search(true, array_column($data['links'], 'active'));
+
         return [
             'success' => true,
             'page' => $data['current_page'],
@@ -23,8 +25,8 @@ final class UserResourceCollection extends ResourceCollection
             'total_users' => $data['total'],
             'count' => $data['per_page'],
             'links' => [
-                'next_url' => $data['links']['2']['url'],
-                'prev_url' => $data['links']['0']['url'],
+                'next_url' => $data['links'][$currentPage + 1]['url'],
+                'prev_url' => $data['links'][$currentPage - 1]['url'],
             ],
             'users' => $this->collection,
         ];
