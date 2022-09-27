@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use App\Exceptions\HttpException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\UserPosition\UserPosition;
 use App\Http\Requests\RetrieveUserRequest;
@@ -48,10 +47,7 @@ final class UserController extends Controller
             );
         }
 
-        $optimizedPhoto = $kraken->optimizeImageUpload($data['photo']);
-        $path = 'images/' . uniqid() . '.jpeg';
-        Storage::disk('public')->put($path, $optimizedPhoto);
-        $data['photo'] = Storage::url($path);
+        $data['photo'] = $kraken->optimizeImageUpload($data['photo']);
 
         /** @var User $user */
         $user = User::query()->create($data);
